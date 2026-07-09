@@ -1,0 +1,8 @@
+INSERT INTO EGABAY_ADMINS (ADMIN_ID, USERNAME, PASSWORD_HASH, FULL_NAME, ROLE)
+VALUES (
+    'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
+    'admin_dsa',
+    '$2a$10$2IyUoNOjJUgprVjKoi5TVOHyw61Bi5GYop0gPN73.B096GbMwVJae',
+    'DSA System Administrator',
+    'ADMIN'
+);

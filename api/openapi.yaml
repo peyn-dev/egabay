@@ -1,0 +1,113 @@
+openapi: 3.1.0
+info:
+  title: EGABAY API
+  description: |
+    REST API for the Mindanao State University (MSU) Division of Student Affairs (DSA)
+    student profiling and guidance records system.
+  version: 0.1.0
+  contact:
+    name: MSU DSA
+servers:
+  - url: http://localhost:8080
+    description: Local development server
+
+tags:
+  - name: auth
+    description: Authentication endpoints
+
+paths:
+  /auth/login:
+    post:
+      tags:
+        - auth
+      summary: Authenticate an administrator
+      description: Validates administrator credentials and returns a bearer JWT token.
+      operationId: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+            example:
+              username: admin_dsa
+              password: Password123
+      responses:
+        '200':
+          description: Successful authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+              example:
+                token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+                username: admin_dsa
+                full_name: DSA System Administrator
+                role: ADMIN
+        '400':
+          description: Invalid request payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    LoginRequest:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+          minLength: 1
+          example: admin_dsa
+        password:
+          type: string
+          minLength: 1
+          example: Password123
+
+    LoginResponse:
+      type: object
+      required:
+        - token
+        - username
+        - full_name
+        - role
+      properties:
+        token:
+          type: string
+          description: Bearer JWT access token
+        username:
+          type: string
+        full_name:
+          type: string
+        role:
+          type: string
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: string
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
