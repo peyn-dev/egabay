@@ -11,8 +11,8 @@ export function BrandSeal({ className, size = 'full' }: BrandSealProps) {
       <div className={cn('flex items-center gap-3', className)}>
         <div className="flex size-10 items-center justify-center overflow-hidden rounded-lg bg-primary-foreground/10 ring-1 ring-primary-foreground/20 backdrop-blur-sm">
           <img
-            src="/msu-seal.png"
-            alt="MSU"
+            src="/dsa-logo.png"
+            alt="DSA"
             className="size-8 object-contain"
           />
         </div>
@@ -58,7 +58,7 @@ export function BrandSeal({ className, size = 'full' }: BrandSealProps) {
             }}
           />
           <img
-            src="/msu-seal.png"
+            src="/dsa-logo.png"
             alt="Mindanao State University institutional seal"
             className="relative z-10 h-auto w-[180px] drop-shadow-[0_8px_24px_rgba(0,0,0,0.25)]"
           />

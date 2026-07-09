@@ -12,6 +12,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import { useLogout } from '@/features/auth/hooks/useLogout'
 import { MobileSidebarContent } from './sidebar'
 
 interface HeaderProps {
@@ -19,6 +20,7 @@ interface HeaderProps {
 }
 
 export function Header(_props: HeaderProps) {
+  const logout = useLogout()
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b border-zinc-200 bg-white/95 backdrop-blur-sm px-4 lg:px-6">
       {/* Mobile menu trigger */}
@@ -71,7 +73,7 @@ export function Header(_props: HeaderProps) {
             <DropdownMenuItem>Profile</DropdownMenuItem>
             <DropdownMenuItem>Settings</DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-red-600 focus:text-red-600">Log out</DropdownMenuItem>
+            <DropdownMenuItem className="text-red-600 focus:text-red-600" onClick={logout}>Log out</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

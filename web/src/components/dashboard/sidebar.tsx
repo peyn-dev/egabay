@@ -3,6 +3,7 @@ import { ClipboardList, LayoutDashboard, LogOut, Settings } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
 import { Separator } from '@/components/ui/separator'
+import { useLogout } from '@/features/auth/hooks/useLogout'
 
 const navItems = [
   { label: 'Dashboard', icon: LayoutDashboard, href: '#', active: true },
@@ -19,6 +20,8 @@ interface SidebarProps extends ComponentPropsWithoutRef<'aside'> {
 }
 
 export function Sidebar({ className, onNavClick, ...props }: SidebarProps) {
+  const logout = useLogout()
+
   return (
     <aside
       className={cn(
@@ -65,7 +68,7 @@ export function Sidebar({ className, onNavClick, ...props }: SidebarProps) {
           <button
             key={item.label}
             type="button"
-            onClick={onNavClick}
+            onClick={item.label === 'Logout' ? logout : onNavClick}
             className={cn(
               'flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200',
               item.active
@@ -83,6 +86,8 @@ export function Sidebar({ className, onNavClick, ...props }: SidebarProps) {
 }
 
 export function MobileSidebarContent({ onNavClick }: { onNavClick?: () => void }) {
+  const logout = useLogout()
+
   return (
     <div className="flex h-full flex-col">
       {/* Brand */}
@@ -122,7 +127,7 @@ export function MobileSidebarContent({ onNavClick }: { onNavClick?: () => void }
           <button
             key={item.label}
             type="button"
-            onClick={onNavClick}
+            onClick={item.label === 'Logout' ? logout : onNavClick}
             className={cn(
               'flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200',
               item.active
