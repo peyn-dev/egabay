@@ -24,7 +24,9 @@ func main() {
 	defer database.Close()
 
 	adminRepo := repository.NewAdminRepository(database)
+	dashboardRepo := repository.NewDashboardRepository(database)
 	authHandler := handler.NewAuthHandler(adminRepo, cfg.JWTSecret)
+	dashboardHandler := handler.NewDashboardHandler(dashboardRepo)
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("POST /auth/login", authHandler.Login)
@@ -33,6 +35,12 @@ func main() {
 		w.WriteHeader(http.StatusOK)
 		_, _ = w.Write([]byte(`{"status":"ok"}`))
 	})
+	mux.HandleFunc("GET /api/dashboard/stats", dashboardHandler.Stats)
+	mux.HandleFunc("GET /api/dashboard/submissions", dashboardHandler.RecentSubmissions)
+	mux.HandleFunc("GET /api/dashboard/gender-ratio", dashboardHandler.GenderRatio)
+	mux.HandleFunc("GET /api/dashboard/tribe-distribution", dashboardHandler.TribeDistribution)
+	mux.HandleFunc("GET /api/dashboard/top-colleges", dashboardHandler.TopColleges)
+	mux.HandleFunc("GET /api/dashboard/year-level", dashboardHandler.YearLevel)
 
 	addr := fmt.Sprintf(":%d", cfg.ServerPort)
 	log.Printf("egabay server listening on %s", addr)

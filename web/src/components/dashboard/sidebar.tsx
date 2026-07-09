@@ -32,11 +32,8 @@ export function Sidebar({ className, onNavClick, ...props }: SidebarProps) {
         <h1 className="text-xl font-bold tracking-tight text-zinc-900">
           e<span className="text-primary">GABAY</span>
         </h1>
-        <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-zinc-400">
-          MSU-CARE
-        </p>
         <p className="mt-1.5 text-[10px] leading-tight text-zinc-400 max-w-[180px]">
-          Mindanao State University Division of Student Affairs
+          Mindanao State University - Division of Student Affairs
         </p>
       </div>
 
@@ -93,11 +90,8 @@ export function MobileSidebarContent({ onNavClick }: { onNavClick?: () => void }
         <h1 className="text-xl font-bold tracking-tight text-zinc-900">
           e<span className="text-primary">GABAY</span>
         </h1>
-        <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-zinc-400">
-          MSU-CARE
-        </p>
         <p className="mt-1.5 text-[10px] leading-tight text-zinc-400 max-w-[180px]">
-          Mindanao State University Division of Student Affairs
+          Mindanao State University, Division of Student Affairs
         </p>
       </div>
 
