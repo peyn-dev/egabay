@@ -1,13 +1,14 @@
 import { type ComponentPropsWithoutRef } from 'react'
 import { ClipboardList, LayoutDashboard, LogOut, Settings } from 'lucide-react'
+import { useLocation, useNavigate } from 'react-router'
 
 import { cn } from '@/lib/utils'
 import { Separator } from '@/components/ui/separator'
 import { useLogout } from '@/features/auth/hooks/useLogout'
 
 const navItems = [
-  { label: 'Dashboard', icon: LayoutDashboard, href: '#', active: true },
-  { label: 'Student Forms', icon: ClipboardList, href: '#', active: false },
+  { label: 'Dashboard', icon: LayoutDashboard, href: '/dashboard' },
+  { label: 'Student Forms', icon: ClipboardList, href: '/student' },
 ]
 
 const bottomItems = [
@@ -16,10 +17,11 @@ const bottomItems = [
 ]
 
 interface SidebarProps extends ComponentPropsWithoutRef<'aside'> {
-  onNavClick?: () => void
 }
 
-export function Sidebar({ className, onNavClick, ...props }: SidebarProps) {
+export function Sidebar({ className, ...props }: SidebarProps) {
+  const navigate = useNavigate()
+  const location = useLocation()
   const logout = useLogout()
 
   return (
@@ -48,10 +50,10 @@ export function Sidebar({ className, onNavClick, ...props }: SidebarProps) {
           <button
             key={item.label}
             type="button"
-            onClick={onNavClick}
+            onClick={() => navigate(item.href)}
             className={cn(
               'flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200',
-              item.active
+              location.pathname === item.href
                 ? 'bg-primary/10 text-primary'
                 : 'text-zinc-500 hover:bg-zinc-100 hover:text-zinc-700',
             )}
@@ -68,10 +70,10 @@ export function Sidebar({ className, onNavClick, ...props }: SidebarProps) {
           <button
             key={item.label}
             type="button"
-            onClick={item.label === 'Logout' ? logout : onNavClick}
+            onClick={item.label === 'Logout' ? logout : () => navigate(item.href)}
             className={cn(
               'flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200',
-              item.active
+              location.pathname === item.href
                 ? 'bg-primary/10 text-primary'
                 : 'text-zinc-500 hover:bg-zinc-100 hover:text-zinc-700',
             )}
@@ -85,7 +87,9 @@ export function Sidebar({ className, onNavClick, ...props }: SidebarProps) {
   )
 }
 
-export function MobileSidebarContent({ onNavClick }: { onNavClick?: () => void }) {
+export function MobileSidebarContent() {
+  const navigate = useNavigate()
+  const location = useLocation()
   const logout = useLogout()
 
   return (
@@ -107,10 +111,10 @@ export function MobileSidebarContent({ onNavClick }: { onNavClick?: () => void }
           <button
             key={item.label}
             type="button"
-            onClick={onNavClick}
+            onClick={() => navigate(item.href)}
             className={cn(
               'flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200',
-              item.active
+              location.pathname === item.href
                 ? 'bg-primary/10 text-primary'
                 : 'text-zinc-500 hover:bg-zinc-100 hover:text-zinc-700',
             )}
@@ -127,10 +131,10 @@ export function MobileSidebarContent({ onNavClick }: { onNavClick?: () => void }
           <button
             key={item.label}
             type="button"
-            onClick={item.label === 'Logout' ? logout : onNavClick}
+            onClick={item.label === 'Logout' ? logout : () => navigate(item.href)}
             className={cn(
               'flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200',
-              item.active
+              location.pathname === item.href
                 ? 'bg-primary/10 text-primary'
                 : 'text-zinc-500 hover:bg-zinc-100 hover:text-zinc-700',
             )}
