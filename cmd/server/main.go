@@ -25,8 +25,12 @@ func main() {
 
 	adminRepo := repository.NewAdminRepository(database)
 	dashboardRepo := repository.NewDashboardRepository(database)
+	studentRepo := repository.NewStudentRepository(database)
+	formRepo := repository.NewFormRepository(database)
 	authHandler := handler.NewAuthHandler(adminRepo, cfg.JWTSecret)
 	dashboardHandler := handler.NewDashboardHandler(dashboardRepo)
+	studentHandler := handler.NewStudentHandler(studentRepo)
+	formHandler := handler.NewFormHandler(formRepo)
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("POST /auth/login", authHandler.Login)
@@ -41,6 +45,8 @@ func main() {
 	mux.HandleFunc("GET /api/dashboard/tribe-distribution", dashboardHandler.TribeDistribution)
 	mux.HandleFunc("GET /api/dashboard/top-colleges", dashboardHandler.TopColleges)
 	mux.HandleFunc("GET /api/dashboard/year-level", dashboardHandler.YearLevel)
+	mux.HandleFunc("GET /api/student/informations", studentHandler.StudentInformation)
+	mux.HandleFunc("GET /api/student/{id}/form", formHandler.FormDetail)
 
 	addr := fmt.Sprintf(":%d", cfg.ServerPort)
 	log.Printf("egabay server listening on %s", addr)
