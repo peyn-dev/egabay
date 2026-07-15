@@ -32,6 +32,21 @@ export interface YearLevelEntry {
   count: number
 }
 
+export interface ConcernEntry {
+  label: string
+  count: number
+}
+
+export interface CivilStatusEntry {
+  status: string
+  count: number
+}
+
+export interface WorkingStatusEntry {
+  status: string
+  count: number
+}
+
 async function fetchJson<T>(url: string): Promise<T> {
   const res = await fetch(url)
   if (!res.ok) throw new Error(`Failed to fetch ${url}`)
@@ -79,5 +94,26 @@ export function useYearLevel() {
   return useQuery({
     queryKey: ['dashboard', 'year-level'],
     queryFn: () => fetchJson<YearLevelEntry[]>('/api/dashboard/year-level'),
+  })
+}
+
+export function useGuidanceConcerns() {
+  return useQuery({
+    queryKey: ['dashboard', 'guidance-concerns'],
+    queryFn: () => fetchJson<ConcernEntry[]>('/api/dashboard/guidance-concerns'),
+  })
+}
+
+export function useCivilStatus() {
+  return useQuery({
+    queryKey: ['dashboard', 'civil-status'],
+    queryFn: () => fetchJson<CivilStatusEntry[]>('/api/dashboard/civil-status'),
+  })
+}
+
+export function useCurrentlyWorking() {
+  return useQuery({
+    queryKey: ['dashboard', 'currently-working'],
+    queryFn: () => fetchJson<WorkingStatusEntry[]>('/api/dashboard/currently-working'),
   })
 }

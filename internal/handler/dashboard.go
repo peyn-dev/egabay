@@ -92,3 +92,36 @@ func (h *DashboardHandler) YearLevel(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(data)
 }
+
+func (h *DashboardHandler) GuidanceConcerns(w http.ResponseWriter, r *http.Request) {
+	data, err := h.repo.GetGuidanceConcerns()
+	if err != nil {
+		log.Printf("guidance concerns error: %v", err)
+		http.Error(w, `{"error":"failed to fetch guidance concerns"}`, http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(data)
+}
+
+func (h *DashboardHandler) CivilStatus(w http.ResponseWriter, r *http.Request) {
+	data, err := h.repo.GetCivilStatusDistribution()
+	if err != nil {
+		log.Printf("civil status error: %v", err)
+		http.Error(w, `{"error":"failed to fetch civil status"}`, http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(data)
+}
+
+func (h *DashboardHandler) CurrentlyWorking(w http.ResponseWriter, r *http.Request) {
+	data, err := h.repo.GetCurrentlyWorkingDistribution()
+	if err != nil {
+		log.Printf("currently working error: %v", err)
+		http.Error(w, `{"error":"failed to fetch currently working"}`, http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(data)
+}

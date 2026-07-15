@@ -177,6 +177,102 @@ func (r *DashboardRepository) GetYearLevelDistribution() ([]YearLevelEntry, erro
 	return result, nil
 }
 
+type ConcernEntry struct {
+	Label string `json:"label"`
+	Count int    `json:"count"`
+}
+
+type CivilStatusEntry struct {
+	Status string `json:"status"`
+	Count  int    `json:"count"`
+}
+
+type WorkingStatusEntry struct {
+	Status string `json:"status"`
+	Count  int    `json:"count"`
+}
+
+func (r *DashboardRepository) GetGuidanceConcerns() ([]ConcernEntry, error) {
+	rows, err := r.db.Query(`
+		SELECT 'Family Matters', COUNT(*) FROM STUDENTPROFILES WHERE COALESCE(FAMILYMATTERS, '') = '1'
+		UNION ALL
+		SELECT 'Career Concerns', COUNT(*) FROM STUDENTPROFILES WHERE COALESCE(CAREERCONCERNS, '') = '1'
+		UNION ALL
+		SELECT 'Relationship Concerns', COUNT(*) FROM STUDENTPROFILES WHERE COALESCE(RELATIONSHIPCONCERNS, '') = '1'
+		UNION ALL
+		SELECT 'Self Concerns', COUNT(*) FROM STUDENTPROFILES WHERE COALESCE(SELFCONCERNS, '') = '1'
+		UNION ALL
+		SELECT 'Concerns w/ Teachers', COUNT(*) FROM STUDENTPROFILES WHERE COALESCE(CONCERNSWITHTEACHERS, '') = '1'
+		UNION ALL
+		SELECT 'Financial Matters', COUNT(*) FROM STUDENTPROFILES WHERE COALESCE(FINANCIALMATTERS, '') = '1'
+		UNION ALL
+		SELECT 'Academic Concerns', COUNT(*) FROM STUDENTPROFILES WHERE COALESCE(ACADEMICCONCERNS, '') = '1'
+		UNION ALL
+		SELECT 'Health Concerns', COUNT(*) FROM STUDENTPROFILES WHERE COALESCE(HEALTHCONCERNS, '') = '1'
+		ORDER BY 2 DESC
+	`)
+	if err != nil {
+		return nil, fmt.Errorf("guidance concerns: %w", err)
+	}
+	defer rows.Close()
+
+	var result []ConcernEntry
+	for rows.Next() {
+		var e ConcernEntry
+		if err := rows.Scan(&e.Label, &e.Count); err != nil {
+			return nil, err
+		}
+		result = append(result, e)
+	}
+	return result, nil
+}
+
+func (r *DashboardRepository) GetCivilStatusDistribution() ([]CivilStatusEntry, error) {
+	rows, err := r.db.Query(`
+		SELECT COALESCE(NULLIF(TRIM(CIVILSTATUS), ''), 'Unknown'), COUNT(*)
+		FROM STUDENTPROFILES
+		GROUP BY CIVILSTATUS
+		ORDER BY COUNT(*) DESC
+	`)
+	if err != nil {
+		return nil, fmt.Errorf("civil status: %w", err)
+	}
+	defer rows.Close()
+
+	var result []CivilStatusEntry
+	for rows.Next() {
+		var e CivilStatusEntry
+		if err := rows.Scan(&e.Status, &e.Count); err != nil {
+			return nil, err
+		}
+		result = append(result, e)
+	}
+	return result, nil
+}
+
+func (r *DashboardRepository) GetCurrentlyWorkingDistribution() ([]WorkingStatusEntry, error) {
+	rows, err := r.db.Query(`
+		SELECT COALESCE(NULLIF(TRIM(ISCURRENTLYWORKING), ''), 'Unknown'), COUNT(*)
+		FROM STUDENTPROFILES
+		GROUP BY ISCURRENTLYWORKING
+		ORDER BY COUNT(*) DESC
+	`)
+	if err != nil {
+		return nil, fmt.Errorf("currently working: %w", err)
+	}
+	defer rows.Close()
+
+	var result []WorkingStatusEntry
+	for rows.Next() {
+		var e WorkingStatusEntry
+		if err := rows.Scan(&e.Status, &e.Count); err != nil {
+			return nil, err
+		}
+		result = append(result, e)
+	}
+	return result, nil
+}
+
 func (r *DashboardRepository) GetRecentSubmissions(limit int) ([]RecentSubmission, error) {
 	query := fmt.Sprintf(`
 		SELECT FIRST %d

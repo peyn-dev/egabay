@@ -45,6 +45,9 @@ func main() {
 	mux.HandleFunc("GET /api/dashboard/tribe-distribution", dashboardHandler.TribeDistribution)
 	mux.HandleFunc("GET /api/dashboard/top-colleges", dashboardHandler.TopColleges)
 	mux.HandleFunc("GET /api/dashboard/year-level", dashboardHandler.YearLevel)
+	mux.HandleFunc("GET /api/dashboard/guidance-concerns", dashboardHandler.GuidanceConcerns)
+	mux.HandleFunc("GET /api/dashboard/civil-status", dashboardHandler.CivilStatus)
+	mux.HandleFunc("GET /api/dashboard/currently-working", dashboardHandler.CurrentlyWorking)
 	mux.HandleFunc("GET /api/student/informations", studentHandler.StudentInformation)
 	mux.HandleFunc("GET /api/student/{id}/form", formHandler.FormDetail)
 
