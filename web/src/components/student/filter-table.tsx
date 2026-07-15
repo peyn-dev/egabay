@@ -1,4 +1,4 @@
-import { Search, MoreVertical, X } from 'lucide-react'
+import { Search, X } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -9,18 +9,39 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import type { StudentFilters } from '@/features/student/hooks/useStudentData'
 
 interface ActiveFilter {
   key: string
   label: string
+  value: string
 }
 
-const activeFilters: ActiveFilter[] = [
-  { key: 'tribe', label: 'Tribe: Maranao' },
-  { key: 'semester', label: 'Semester: First 2023-24' },
-]
+interface FilterTableProps {
+  filters: StudentFilters
+  onFilterChange: (filters: StudentFilters) => void
+  onApply: () => void
+}
 
-export function FilterTable() {
+function buildActiveFilters(filters: StudentFilters): ActiveFilter[] {
+  const result: ActiveFilter[] = []
+  if (filters.search) result.push({ key: 'search', label: `Search: "${filters.search}"`, value: filters.search })
+  if (filters.college) result.push({ key: 'college', label: `College: ${filters.college}`, value: filters.college })
+  if (filters.year_level) result.push({ key: 'year_level', label: `Year: ${filters.year_level}`, value: filters.year_level })
+  return result
+}
+
+export function FilterTable({ filters, onFilterChange, onApply }: FilterTableProps) {
+  const activeFilters = buildActiveFilters(filters)
+
+  const removeFilter = (key: string) => {
+    onFilterChange({ ...filters, [key]: '' })
+  }
+
+  const clearAll = () => {
+    onFilterChange({ search: '', college: '', year_level: '' })
+  }
+
   return (
     <div>
       <div className="rounded-xl border border-zinc-200 bg-white shadow-sm overflow-hidden">
@@ -31,31 +52,40 @@ export function FilterTable() {
               <Input
                 placeholder="Search by name, ID, or program..."
                 className="h-9 pl-9"
+                value={filters.search}
+                onChange={(e) => onFilterChange({ ...filters, search: e.target.value })}
+                onKeyDown={(e) => { if (e.key === 'Enter') onApply() }}
               />
             </div>
 
-            <Select defaultValue="all">
+            <Select
+              value={filters.college || 'all'}
+              onValueChange={(value) => onFilterChange({ ...filters, college: value === 'all' ? '' : value })}
+            >
               <SelectTrigger className="h-9 w-full lg:w-[160px]">
                 <SelectValue placeholder="College" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Colleges</SelectItem>
-                <SelectItem value="ccs">College of Computer Studies</SelectItem>
-                <SelectItem value="coe">College of Engineering</SelectItem>
-                <SelectItem value="ced">College of Education</SelectItem>
+                <SelectItem value="College of Computer Studies">College of Computer Studies</SelectItem>
+                <SelectItem value="College of Engineering">College of Engineering</SelectItem>
+                <SelectItem value="College of Education">College of Education</SelectItem>
               </SelectContent>
             </Select>
 
-            <Select defaultValue="any">
+            <Select
+              value={filters.year_level || 'any'}
+              onValueChange={(value) => onFilterChange({ ...filters, year_level: value === 'any' ? '' : value })}
+            >
               <SelectTrigger className="h-9 w-full lg:w-[140px]">
                 <SelectValue placeholder="Year Level" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="any">Any Year</SelectItem>
-                <SelectItem value="1">1st Year</SelectItem>
-                <SelectItem value="2">2nd Year</SelectItem>
-                <SelectItem value="3">3rd Year</SelectItem>
-                <SelectItem value="4">4th Year</SelectItem>
+                <SelectItem value="1st">1st Year</SelectItem>
+                <SelectItem value="2nd">2nd Year</SelectItem>
+                <SelectItem value="3rd">3rd Year</SelectItem>
+                <SelectItem value="4th">4th Year</SelectItem>
               </SelectContent>
             </Select>
 
@@ -71,15 +101,8 @@ export function FilterTable() {
             </Select>
 
             <div className="flex items-center gap-1.5">
-              <Button size="sm" className="h-9 whitespace-nowrap">
+              <Button size="sm" className="h-9 whitespace-nowrap" onClick={onApply}>
                 Apply Filters
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-9 w-9 text-zinc-400 hover:text-zinc-600"
-              >
-                <MoreVertical className="size-4" />
               </Button>
             </div>
           </div>
@@ -97,6 +120,7 @@ export function FilterTable() {
                     type="button"
                     className="rounded-full text-zinc-400 hover:text-zinc-700"
                     aria-label={`Remove ${filter.label} filter`}
+                    onClick={() => removeFilter(filter.key)}
                   >
                     <X className="size-3" />
                   </button>
@@ -105,6 +129,7 @@ export function FilterTable() {
               <button
                 type="button"
                 className="text-xs font-medium text-zinc-500 underline underline-offset-2 hover:text-zinc-800"
+                onClick={clearAll}
               >
                 Clear all filters
               </button>
