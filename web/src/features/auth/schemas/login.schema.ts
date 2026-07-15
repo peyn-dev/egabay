@@ -24,14 +24,22 @@ export class LoginError extends Error {
 export async function loginRequest(
   values: LoginFormValues,
 ): Promise<LoginResponse> {
-  const response = await fetch('/auth/login', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(values),
-  })
+  let response: Response
+  try {
+    response = await fetch('/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(values),
+    })
+  } catch {
+    throw new LoginError('Server is down, please try again later.')
+  }
 
-  const payload = (await response.json()) as LoginResponse & {
-    error?: string
+  let payload: LoginResponse & { error?: string }
+  try {
+    payload = await response.json()
+  } catch {
+    throw new LoginError('Server is down, please try again later.')
   }
 
   if (!response.ok) {
