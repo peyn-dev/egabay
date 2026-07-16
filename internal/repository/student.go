@@ -113,3 +113,53 @@ func (r *StudentRepository) GetStudentInformation(filter StudentFilter) (*Pagina
 		Limit: filter.Limit,
 	}, nil
 }
+
+func (r *StudentRepository) GetColleges() ([]CollegeEntry, error) {
+	rows, err := r.db.Query(`
+		SELECT DISTINCT TRIM(d.COLLEGE)
+		FROM STUDENTPROFILES sp
+		INNER JOIN STUDENTS s ON s.IDNUMBER = sp.IDNUMBER
+		LEFT JOIN COURSES c ON c.COURSE = s.COURSE
+		LEFT JOIN DEPARTMENTS d ON d.DEPARTMENT = c.DEPARTMENT
+		WHERE d.COLLEGE IS NOT NULL AND TRIM(d.COLLEGE) != ''
+		ORDER BY TRIM(d.COLLEGE)
+	`)
+	if err != nil {
+		return nil, fmt.Errorf("query colleges: %w", err)
+	}
+	defer rows.Close()
+
+	var result []CollegeEntry
+	for rows.Next() {
+		var e CollegeEntry
+		if err := rows.Scan(&e.College); err != nil {
+			return nil, err
+		}
+		result = append(result, e)
+	}
+	return result, nil
+}
+
+func (r *StudentRepository) GetYearLevels() ([]YearLevelEntry, error) {
+	rows, err := r.db.Query(`
+		SELECT DISTINCT TRIM(s.YEARLEVEL)
+		FROM STUDENTPROFILES sp
+		INNER JOIN STUDENTS s ON s.IDNUMBER = sp.IDNUMBER
+		WHERE s.YEARLEVEL IS NOT NULL AND TRIM(s.YEARLEVEL) != ''
+		ORDER BY TRIM(s.YEARLEVEL)
+	`)
+	if err != nil {
+		return nil, fmt.Errorf("query year levels: %w", err)
+	}
+	defer rows.Close()
+
+	var result []YearLevelEntry
+	for rows.Next() {
+		var e YearLevelEntry
+		if err := rows.Scan(&e.Level); err != nil {
+			return nil, err
+		}
+		result = append(result, e)
+	}
+	return result, nil
+}

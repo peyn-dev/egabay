@@ -72,6 +72,8 @@ export default function FormDetailPage() {
   }
 
   const p = form.profile
+  const f = form.family
+  const a = form.academic
   const avatarFallback = initials(p.full_name)
 
   return (
@@ -122,9 +124,7 @@ export default function FormDetailPage() {
                   </Avatar>
                 </div>
                 <h3 className="text-lg font-bold text-zinc-900">{p.full_name}</h3>
-                <p className="text-sm font-medium text-primary">
-                  {p.student_id}
-                </p>
+                <p className="text-sm font-medium text-primary">{p.student_id}</p>
                 <Badge
                   variant="secondary"
                   className="mt-2 border-emerald-200 bg-emerald-50 text-xs font-semibold text-emerald-700"
@@ -162,6 +162,15 @@ export default function FormDetailPage() {
                     <p className="text-sm font-medium text-zinc-900">{p.year_level || '—'}</p>
                   </div>
                 </div>
+                <div className="flex items-center gap-2.5">
+                  <FileText className="size-4 shrink-0 text-zinc-400" />
+                  <div className="min-w-0">
+                    <p className="text-xs text-zinc-400">Height / Weight</p>
+                    <p className="text-sm font-medium text-zinc-900">
+                      {p.height || '—'} / {p.weight || '—'}
+                    </p>
+                  </div>
+                </div>
               </div>
 
               <Separator className="my-4" />
@@ -171,24 +180,22 @@ export default function FormDetailPage() {
                 <div className="flex items-center gap-2.5">
                   <FileText className="size-4 shrink-0 text-zinc-400" />
                   <div className="min-w-0">
-                    <p className="text-xs text-zinc-400">Email</p>
-                    <p className="text-sm font-medium text-zinc-900 truncate">
-                      {p.email || '—'}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2.5">
-                  <FileText className="size-4 shrink-0 text-zinc-400" />
-                  <div className="min-w-0">
-                    <p className="text-xs text-zinc-400">Phone</p>
-                    <p className="text-sm font-medium text-zinc-900">{p.phone || '—'}</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2.5">
-                  <FileText className="size-4 shrink-0 text-zinc-400" />
-                  <div className="min-w-0">
                     <p className="text-xs text-zinc-400">Address</p>
                     <p className="text-sm font-medium text-zinc-900">{p.address || '—'}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2.5">
+                  <FileText className="size-4 shrink-0 text-zinc-400" />
+                  <div className="min-w-0">
+                    <p className="text-xs text-zinc-400">Address Type</p>
+                    <p className="text-sm font-medium text-zinc-900">{p.present_address_type || '—'}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2.5">
+                  <FileText className="size-4 shrink-0 text-zinc-400" />
+                  <div className="min-w-0">
+                    <p className="text-xs text-zinc-400">Currently Working</p>
+                    <p className="text-sm font-medium text-zinc-900">{p.is_currently_working || '—'}</p>
                   </div>
                 </div>
               </div>
@@ -204,39 +211,130 @@ export default function FormDetailPage() {
               <LabelValue label="Full Name" value={p.full_name} />
               <LabelValue label="Student ID" value={p.student_id} />
               <LabelValue label="Gender" value={p.gender} />
-              <LabelValue label="Tribe / Ethno-linguistic Group" value={p.tribe} />
-              <LabelValue label="Date of Birth" value={p.date_of_birth} />
-              <LabelValue label="Place of Birth" value={p.place_of_birth} />
+              <LabelValue label="Tribe" value={p.tribe} />
+              <LabelValue label="Other Tribe" value={p.other_tribe} />
               <LabelValue label="Civil Status" value={p.civil_status} />
-              <LabelValue label="Religious Affiliation" value={p.religious_affiliation} />
               <LabelValue label="Nationality" value={p.nationality} />
+              <LabelValue label="Height" value={p.height} />
+              <LabelValue label="Weight" value={p.weight} />
             </div>
           </SectionCard>
 
           {/* 2. Family Background */}
           <SectionCard label="Family Background">
-            <div className="grid gap-4 sm:grid-cols-2">
-              <LabelValue label="Father's Name" value={form.family.father_name} />
-              <LabelValue label="Father's Occupation" value={form.family.father_occupation} />
-              <LabelValue label="Mother's Name" value={form.family.mother_name} />
-              <LabelValue label="Mother's Occupation" value={form.family.mother_occupation} />
+            <p className="mb-3 text-xs font-semibold tracking-wide text-zinc-500 uppercase">Father</p>
+            <div className="mb-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <LabelValue label="Father's Name" value={f.father_name} />
+              <LabelValue label="Father's Occupation" value={f.father_occupation} />
+              <LabelValue label="Age" value={f.father_age} />
+              <LabelValue label="Educational Attainment" value={f.father_educational_attainment} />
+              <LabelValue label="Living Status" value={f.father_living_status} />
             </div>
-            <Separator className="my-4" />
+
+            <Separator className="mb-4" />
+
+            <p className="mb-3 text-xs font-semibold tracking-wide text-zinc-500 uppercase">Mother</p>
+            <div className="mb-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <LabelValue label="Mother's Name" value={f.mother_name} />
+              <LabelValue label="Mother's Occupation" value={f.mother_occupation} />
+              <LabelValue label="Age" value={f.mother_age} />
+              <LabelValue label="Educational Attainment" value={f.mother_educational_attainment} />
+              <LabelValue label="Living Status" value={f.mother_living_status} />
+            </div>
+
+            <Separator className="mb-4" />
+
+            <p className="mb-3 text-xs font-semibold tracking-wide text-zinc-500 uppercase">Guardian</p>
+            <div className="mb-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <LabelValue label="Guardian's Name" value={f.guardian_name} />
+              <LabelValue label="Guardian's Occupation" value={f.guardian_occupation} />
+              <LabelValue label="Guardian's Age" value={f.guardian_age} />
+              <LabelValue label="Educational Attainment" value={f.guardian_educational_attainment} />
+            </div>
+
+            <Separator className="mb-4" />
+
+            <p className="mb-3 text-xs font-semibold tracking-wide text-zinc-500 uppercase">Family Details</p>
+            <div className="mb-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <LabelValue label="Parents' Marital Status" value={f.parents_marital_status} />
+              <LabelValue label="No. of Children" value={f.number_of_children} />
+              <LabelValue label="No. of Brothers" value={f.number_of_brothers} />
+              <LabelValue label="No. of Sisters" value={f.number_of_sisters} />
+            </div>
+
+            <Separator className="mb-4" />
+
+            <p className="mb-3 text-xs font-semibold tracking-wide text-zinc-500 uppercase">Emergency Contact</p>
             <div className="grid gap-4 sm:grid-cols-2">
-              <LabelValue label="Emergency Contact Person" value={form.family.emergency_contact_person} />
-              <LabelValue label="Contact Number" value={form.family.emergency_contact_number} />
+              <LabelValue label="Contact Person" value={f.emergency_contact_person} />
+              <LabelValue label="Address" value={f.emergency_contact_person_address} />
+              <LabelValue label="Contact Number" value={f.emergency_contact_number} />
+              <LabelValue label="Relationship" value={f.relationship} />
             </div>
           </SectionCard>
 
           {/* 3. Academic Information */}
           <SectionCard label="Academic Information">
+            <p className="mb-3 text-xs font-semibold tracking-wide text-zinc-500 uppercase">Elementary</p>
+            <div className="mb-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <LabelValue label="School Name" value={a.elementary_school_name} />
+              <LabelValue label="Address" value={a.elementary_address} />
+              <LabelValue label="Year Graduated" value={a.elementary_year_graduated} />
+              <LabelValue label="School Type" value={a.elementary_school_type} />
+            </div>
+
+            <Separator className="mb-4" />
+
+            <p className="mb-3 text-xs font-semibold tracking-wide text-zinc-500 uppercase">Junior High School</p>
+            <div className="mb-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <LabelValue label="School Name" value={a.junior_high_school_name} />
+              <LabelValue label="Address" value={a.junior_high_address} />
+              <LabelValue label="Year Graduated" value={a.junior_year_graduated} />
+              <LabelValue label="School Type" value={a.junior_high_school_type} />
+            </div>
+
+            <Separator className="mb-4" />
+
+            <p className="mb-3 text-xs font-semibold tracking-wide text-zinc-500 uppercase">Senior High School</p>
+            <div className="mb-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <LabelValue label="School Name" value={a.senior_high_school_name} />
+              <LabelValue label="Address" value={a.senior_high_address} />
+              <LabelValue label="Year Graduated" value={a.senior_year_graduated} />
+              <LabelValue label="School Type" value={a.senior_high_school_type} />
+            </div>
+
+            <Separator className="mb-4" />
+
+            <p className="mb-3 text-xs font-semibold tracking-wide text-zinc-500 uppercase">Vocational</p>
+            <div className="mb-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <LabelValue label="Course Name" value={a.vocational_course_name} />
+              <LabelValue label="Address" value={a.vocational_address} />
+              <LabelValue label="Year Graduated" value={a.vocational_year_graduated} />
+              <LabelValue label="Type" value={a.vocational_type} />
+            </div>
+
+            <Separator className="mb-4" />
+
+            <p className="mb-3 text-xs font-semibold tracking-wide text-zinc-500 uppercase">College</p>
+            <div className="mb-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <LabelValue label="School Name" value={a.college_school_name} />
+              <LabelValue label="Address" value={a.college_address} />
+              <LabelValue label="Year Graduated" value={a.college_year_graduated} />
+              <LabelValue label="Type" value={a.college_type} />
+            </div>
+
+            <Separator className="mb-4" />
+
+            <p className="mb-3 text-xs font-semibold tracking-wide text-zinc-500 uppercase">Additional Info</p>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              <LabelValue label="Secondary School Attended" value={form.academic.secondary_school} />
-              <LabelValue label="Year Graduated (HS)" value={form.academic.year_graduated_hs} />
-              <LabelValue label="Admission Type" value={form.academic.admission_type} />
-              <LabelValue label="Current GPA" value={form.academic.current_gpa} />
-              <LabelValue label="Current Scholarship" value={form.academic.current_scholarship} />
-              <LabelValue label="Units Enrolled" value={form.academic.units_enrolled} />
+              <LabelValue label="Honors Received" value={a.honors_received} />
+              <LabelValue label="Nature of Schooling" value={a.nature_of_schooling} />
+              <LabelValue label="Reason for Stopping" value={a.reason_for_stopping} />
+              <LabelValue label="Financers" value={a.financers} />
+              <LabelValue label="Other Financer" value={a.other_financer} />
+              <LabelValue label="Is Currently Working" value={a.is_currently_working} />
+              <LabelValue label="Employer Name" value={a.employer_name} />
+              <LabelValue label="Employer Address" value={a.employer_address} />
             </div>
           </SectionCard>
 
