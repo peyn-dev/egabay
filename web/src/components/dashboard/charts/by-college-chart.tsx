@@ -11,9 +11,10 @@ import {
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useTopColleges } from '@/features/dashboard/hooks/useDashboardData'
+import type { DashboardFilters } from '@/features/dashboard/hooks/useDashboardData'
 
-export function ByCollegeChart() {
-  const { data, isLoading } = useTopColleges(10)
+export function ByCollegeChart({ filters }: { filters?: DashboardFilters }) {
+  const { data, isLoading } = useTopColleges(10, filters)
 
   const chartData = data?.map((d) => ({
     name: d.college.length > 20 ? d.college.slice(0, 20) + '\u2026' : d.college,

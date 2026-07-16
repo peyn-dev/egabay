@@ -11,9 +11,10 @@ import {
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useYearLevel } from '@/features/dashboard/hooks/useDashboardData'
+import type { DashboardFilters } from '@/features/dashboard/hooks/useDashboardData'
 
-export function YearLevelChart() {
-  const { data, isLoading } = useYearLevel()
+export function YearLevelChart({ filters }: { filters?: DashboardFilters }) {
+  const { data, isLoading } = useYearLevel(filters)
 
   return (
     <Card>

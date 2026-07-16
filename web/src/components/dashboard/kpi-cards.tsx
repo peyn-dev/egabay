@@ -2,6 +2,7 @@ import { FileText, Loader2, Users } from 'lucide-react'
 
 import { Card, CardContent } from '@/components/ui/card'
 import { useDashboardStats } from '@/features/dashboard/hooks/useDashboardData'
+import type { DashboardFilters } from '@/features/dashboard/hooks/useDashboardData'
 
 const kpis = [
   { label: 'Total Enrolled Students', key: 'total_students' as const, icon: Users, format: true },
@@ -12,8 +13,8 @@ function formatNumber(n: number): string {
   return n.toLocaleString('en-US')
 }
 
-export function KpiCards() {
-  const { data, isLoading } = useDashboardStats()
+export function KpiCards({ filters }: { filters?: DashboardFilters }) {
+  const { data, isLoading } = useDashboardStats(filters)
 
   if (isLoading) {
     return (

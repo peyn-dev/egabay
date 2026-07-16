@@ -3,11 +3,12 @@ import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useGenderRatio } from '@/features/dashboard/hooks/useDashboardData'
+import type { DashboardFilters } from '@/features/dashboard/hooks/useDashboardData'
 
 const COLORS = ['#3B82F6', '#EC4899', '#A1A1AA']
 
-export function GenderRatioChart() {
-  const { data, isLoading } = useGenderRatio()
+export function GenderRatioChart({ filters }: { filters?: DashboardFilters }) {
+  const { data, isLoading } = useGenderRatio(filters)
 
   return (
     <Card>

@@ -39,6 +39,7 @@ func main() {
 		w.WriteHeader(http.StatusOK)
 		_, _ = w.Write([]byte(`{"status":"ok"}`))
 	})
+	mux.HandleFunc("GET /api/dashboard/enrollment-periods", dashboardHandler.EnrollmentPeriods)
 	mux.HandleFunc("GET /api/dashboard/stats", dashboardHandler.Stats)
 	mux.HandleFunc("GET /api/dashboard/submissions", dashboardHandler.RecentSubmissions)
 	mux.HandleFunc("GET /api/dashboard/gender-ratio", dashboardHandler.GenderRatio)

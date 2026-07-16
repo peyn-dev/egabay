@@ -37,6 +37,11 @@ type YearLevelEntry struct {
 	Count int    `json:"count"`
 }
 
+type EnrollmentPeriod struct {
+	AcadYear string `json:"acad_year"`
+	Semester string `json:"semester"`
+}
+
 type DashboardRepository struct {
 	db *sql.DB
 }
@@ -45,16 +50,47 @@ func NewDashboardRepository(db *sql.DB) *DashboardRepository {
 	return &DashboardRepository{db: db}
 }
 
-// enrolledIDs returns a subquery for distinct students billed in 2nd semester 2025.
-// This defines "currently enrolled".
-func enrolledIDs() string {
-	return "(SELECT DISTINCT IDNUMBER FROM BILLINGACCOUNTS WHERE ACADYEAR = '2025' AND SEMESTER = '2nd semester')"
+// enrolledSubquery returns a subquery for distinct students billed in the given period,
+// optionally filtered by tribe and/or guidance concern column.
+func enrolledSubquery(acadYear, semester, tribe, concern string) string {
+	base := fmt.Sprintf("SELECT DISTINCT ba.IDNUMBER FROM BILLINGACCOUNTS ba WHERE ba.ACADYEAR = '%s' AND ba.SEMESTER = '%s'", acadYear, semester)
+
+	if tribe != "" || concern != "" {
+		base += " AND EXISTS (SELECT 1 FROM STUDENTPROFILES sp WHERE sp.IDNUMBER = ba.IDNUMBER"
+		if tribe != "" {
+			base += fmt.Sprintf(" AND sp.TRIBE = '%s'", tribe)
+		}
+		if concern != "" {
+			base += fmt.Sprintf(" AND COALESCE(sp.%s, '') = '1'", concern)
+		}
+		base += ")"
+	}
+
+	return "(" + base + ")"
 }
 
-func (r *DashboardRepository) GetStats() (*DashboardStats, error) {
+func (r *DashboardRepository) GetEnrollmentPeriods() ([]EnrollmentPeriod, error) {
+	rows, err := r.db.Query("SELECT DISTINCT ACADYEAR, SEMESTER FROM BILLINGACCOUNTS ORDER BY ACADYEAR DESC, SEMESTER DESC")
+	if err != nil {
+		return nil, fmt.Errorf("enrollment periods: %w", err)
+	}
+	defer rows.Close()
+
+	var result []EnrollmentPeriod
+	for rows.Next() {
+		var p EnrollmentPeriod
+		if err := rows.Scan(&p.AcadYear, &p.Semester); err != nil {
+			return nil, err
+		}
+		result = append(result, p)
+	}
+	return result, nil
+}
+
+func (r *DashboardRepository) GetStats(acadYear, semester, tribe, concern string) (*DashboardStats, error) {
 	var stats DashboardStats
 
-	err := r.db.QueryRow(fmt.Sprintf("SELECT COUNT(*) FROM %s", enrolledIDs())).Scan(&stats.TotalStudents)
+	err := r.db.QueryRow(fmt.Sprintf("SELECT COUNT(*) FROM %s", enrolledSubquery(acadYear, semester, tribe, concern))).Scan(&stats.TotalStudents)
 	if err != nil {
 		return nil, fmt.Errorf("count students: %w", err)
 	}
@@ -67,14 +103,14 @@ func (r *DashboardRepository) GetStats() (*DashboardStats, error) {
 	return &stats, nil
 }
 
-func (r *DashboardRepository) GetGenderRatio() ([]GenderEntry, error) {
+func (r *DashboardRepository) GetGenderRatio(acadYear, semester, tribe, concern string) ([]GenderEntry, error) {
 	rows, err := r.db.Query(fmt.Sprintf(`
 		SELECT COALESCE(NULLIF(s.GENDER, ''), 'Unknown'), COUNT(*)
 		FROM STUDENTS s
 		INNER JOIN %s e ON e.IDNUMBER = s.IDNUMBER
 		GROUP BY s.GENDER
 		ORDER BY COUNT(*) DESC
-	`, enrolledIDs()))
+	`, enrolledSubquery(acadYear, semester, tribe, concern)))
 	if err != nil {
 		return nil, fmt.Errorf("gender ratio: %w", err)
 	}
@@ -115,7 +151,7 @@ func (r *DashboardRepository) GetTribeDistribution() ([]TribeEntry, error) {
 	return result, nil
 }
 
-func (r *DashboardRepository) GetTopColleges(limit int) ([]CollegeEntry, error) {
+func (r *DashboardRepository) GetTopColleges(limit int, acadYear, semester, tribe, concern string) ([]CollegeEntry, error) {
 	rows, err := r.db.Query(fmt.Sprintf(`
 		SELECT COALESCE(NULLIF(d.COLLEGE, ''), 'Unknown'), COUNT(*)
 		FROM STUDENTS s
@@ -124,7 +160,7 @@ func (r *DashboardRepository) GetTopColleges(limit int) ([]CollegeEntry, error) 
 		LEFT JOIN DEPARTMENTS d ON d.DEPARTMENT = c.DEPARTMENT
 		GROUP BY d.COLLEGE
 		ORDER BY COUNT(*) DESC
-	`, enrolledIDs()))
+	`, enrolledSubquery(acadYear, semester, tribe, concern)))
 	if err != nil {
 		return nil, fmt.Errorf("top colleges: %w", err)
 	}
@@ -144,7 +180,7 @@ func (r *DashboardRepository) GetTopColleges(limit int) ([]CollegeEntry, error) 
 	return result, nil
 }
 
-func (r *DashboardRepository) GetYearLevelDistribution() ([]YearLevelEntry, error) {
+func (r *DashboardRepository) GetYearLevelDistribution(acadYear, semester, tribe, concern string) ([]YearLevelEntry, error) {
 	rows, err := r.db.Query(fmt.Sprintf(`
 		SELECT
 			CASE
@@ -160,7 +196,7 @@ func (r *DashboardRepository) GetYearLevelDistribution() ([]YearLevelEntry, erro
 		INNER JOIN %s e ON e.IDNUMBER = s.IDNUMBER
 		GROUP BY level_group
 		ORDER BY COUNT(*) DESC
-	`, enrolledIDs()))
+	`, enrolledSubquery(acadYear, semester, tribe, concern)))
 	if err != nil {
 		return nil, fmt.Errorf("year level: %w", err)
 	}
