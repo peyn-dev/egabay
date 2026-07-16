@@ -39,3 +39,25 @@ func (h *StudentHandler) StudentInformation(w http.ResponseWriter, r *http.Reque
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(students)
 }
+
+func (h *StudentHandler) YearLevels(w http.ResponseWriter, r *http.Request) {
+	levels, err := h.repo.GetYearLevels()
+	if err != nil {
+		log.Printf("year levels error: %v", err)
+		http.Error(w, `{"error":"failed to fetch year levels"}`, http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(levels)
+}
+
+func (h *StudentHandler) Colleges(w http.ResponseWriter, r *http.Request) {
+	colleges, err := h.repo.GetColleges()
+	if err != nil {
+		log.Printf("colleges error: %v", err)
+		http.Error(w, `{"error":"failed to fetch colleges"}`, http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(colleges)
+}

@@ -10,6 +10,8 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import type { StudentFilters } from '@/features/student/hooks/useStudentData'
+import { useColleges } from '@/features/student/hooks/useColleges'
+import { useYearLevels } from '@/features/student/hooks/useYearLevels'
 
 interface ActiveFilter {
   key: string
@@ -32,6 +34,8 @@ function buildActiveFilters(filters: StudentFilters): ActiveFilter[] {
 }
 
 export function FilterTable({ filters, onFilterChange, onApply }: FilterTableProps) {
+  const { data: colleges } = useColleges()
+  const { data: yearLevels } = useYearLevels()
   const activeFilters = buildActiveFilters(filters)
 
   const removeFilter = (key: string) => {
@@ -67,9 +71,9 @@ export function FilterTable({ filters, onFilterChange, onApply }: FilterTablePro
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Colleges</SelectItem>
-                <SelectItem value="College of Computer Studies">College of Computer Studies</SelectItem>
-                <SelectItem value="College of Engineering">College of Engineering</SelectItem>
-                <SelectItem value="College of Education">College of Education</SelectItem>
+                {colleges?.map((c) => (
+                  <SelectItem key={c.college} value={c.college}>{c.college}</SelectItem>
+                ))}
               </SelectContent>
             </Select>
 
@@ -82,10 +86,9 @@ export function FilterTable({ filters, onFilterChange, onApply }: FilterTablePro
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="any">Any Year</SelectItem>
-                <SelectItem value="1st">1st Year</SelectItem>
-                <SelectItem value="2nd">2nd Year</SelectItem>
-                <SelectItem value="3rd">3rd Year</SelectItem>
-                <SelectItem value="4th">4th Year</SelectItem>
+                {yearLevels?.map((y) => (
+                  <SelectItem key={y.level} value={y.level}>{y.level}</SelectItem>
+                ))}
               </SelectContent>
             </Select>
 

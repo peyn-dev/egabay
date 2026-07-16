@@ -7,6 +7,7 @@ export interface StudentFormDetail {
     student_id: string
     gender: string
     tribe: string
+    other_tribe: string
     date_of_birth: string
     place_of_birth: string
     civil_status: string
@@ -18,21 +19,63 @@ export interface StudentFormDetail {
     email: string
     phone: string
     address: string
+    height: string
+    weight: string
+    present_address_type: string
+    is_currently_working: string
   }
   family: {
     father_name: string
+    father_age: string
+    father_educational_attainment: string
+    father_living_status: string
     father_occupation: string
     mother_name: string
+    mother_age: string
+    mother_educational_attainment: string
+    mother_living_status: string
     mother_occupation: string
+    guardian_name: string
+    guardian_age: string
+    guardian_educational_attainment: string
+    guardian_occupation: string
+    parents_marital_status: string
+    number_of_children: string
+    number_of_brothers: string
+    number_of_sisters: string
     emergency_contact_person: string
+    emergency_contact_person_address: string
     emergency_contact_number: string
+    relationship: string
   }
   academic: {
-    secondary_school: string
-    year_graduated_hs: string
-    admission_type: string
-    current_gpa: string
-    current_scholarship: string
-    units_enrolled: string
+    elementary_school_name: string
+    elementary_address: string
+    elementary_year_graduated: string
+    elementary_school_type: string
+    junior_high_school_name: string
+    junior_high_address: string
+    junior_year_graduated: string
+    junior_high_school_type: string
+    senior_high_school_name: string
+    senior_high_address: string
+    senior_year_graduated: string
+    senior_high_school_type: string
+    vocational_course_name: string
+    vocational_address: string
+    vocational_year_graduated: string
+    vocational_type: string
+    college_school_name: string
+    college_address: string
+    college_year_graduated: string
+    college_type: string
+    honors_received: string
+    nature_of_schooling: string
+    reason_for_stopping: string
+    financers: string
+    other_financer: string
+    is_currently_working: string
+    employer_name: string
+    employer_address: string
   }
 }

@@ -50,6 +50,8 @@ func main() {
 	mux.HandleFunc("GET /api/dashboard/civil-status", dashboardHandler.CivilStatus)
 	mux.HandleFunc("GET /api/dashboard/currently-working", dashboardHandler.CurrentlyWorking)
 	mux.HandleFunc("GET /api/student/informations", studentHandler.StudentInformation)
+	mux.HandleFunc("GET /api/student/colleges", studentHandler.Colleges)
+	mux.HandleFunc("GET /api/student/year-levels", studentHandler.YearLevels)
 	mux.HandleFunc("GET /api/student/{id}/form", formHandler.FormDetail)
 
 	addr := fmt.Sprintf(":%d", cfg.ServerPort)
