@@ -52,7 +52,15 @@ export function ByCollegeChart({ filters, className }: { filters?: DashboardFilt
                 />
                 <Tooltip
                   cursor={{ fill: '#fafafa' }}
-                  contentStyle={{ borderRadius: 8, border: '1px solid #e5e5e5', fontSize: 12 }}
+                  content={({ active, payload }) => {
+                    if (!active || !payload?.[0]) return null
+                    return (
+                      <div className="rounded-lg border border-zinc-200 bg-white px-3 py-2 text-xs shadow-sm">
+                        <p className="font-medium text-zinc-700">{payload[0].payload.full}</p>
+                        <p className="text-zinc-500">{Number(payload[0].value).toLocaleString()} students</p>
+                      </div>
+                    )
+                  }}
                 />
                 <Bar dataKey="students" radius={[4, 4, 0, 0]} fill="#FFC928" />
               </BarChart>
