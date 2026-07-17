@@ -28,13 +28,16 @@ export function StudentsPerTribeChart() {
         ) : data && data.length > 0 ? (
           <div className="h-[220px]">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={data} barSize={36} barGap={4}>
+              <BarChart data={data} barSize={36} barGap={1} margin={{ bottom: 15 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" vertical={false} />
                 <XAxis
                   dataKey="tribe"
                   tick={{ fontSize: 11, fill: '#71717a' }}
                   tickLine={false}
                   axisLine={{ stroke: '#e5e5e5' }}
+                  angle={-45}
+                  textAnchor="end"
+                  height={60}
                 />
                 <YAxis
                   tick={{ fontSize: 11, fill: '#71717a' }}
