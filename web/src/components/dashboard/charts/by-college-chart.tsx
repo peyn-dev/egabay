@@ -13,8 +13,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useTopColleges } from '@/features/dashboard/hooks/useDashboardData'
 import type { DashboardFilters } from '@/features/dashboard/hooks/useDashboardData'
 
-export function ByCollegeChart({ filters }: { filters?: DashboardFilters }) {
-  const { data, isLoading } = useTopColleges(10, filters)
+export function ByCollegeChart({ filters, className }: { filters?: DashboardFilters; className?: string }) {
+  const { data, isLoading } = useTopColleges(5, filters)
 
   const chartData = data?.map((d) => ({
     name: d.college.length > 20 ? d.college.slice(0, 20) + '\u2026' : d.college,
@@ -23,7 +23,7 @@ export function ByCollegeChart({ filters }: { filters?: DashboardFilters }) {
   }))
 
   return (
-    <Card>
+    <Card className={className}>
       <CardHeader className="pb-2">
         <CardTitle className="text-sm font-semibold text-zinc-700">STUDENTS PER COLLEGE</CardTitle>
       </CardHeader>
@@ -35,7 +35,7 @@ export function ByCollegeChart({ filters }: { filters?: DashboardFilters }) {
         ) : chartData && chartData.length > 0 ? (
           <div className="h-[220px]">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={chartData} barSize={36} barGap={4}>
+              <BarChart data={chartData} barSize={90} barGap={4}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" vertical={false} />
                 <XAxis
                   dataKey="name"
