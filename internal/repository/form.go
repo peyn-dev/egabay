@@ -131,6 +131,7 @@ func (repo *FormRepository) GetFormDetail(idNumber int) (*FormDetail, error) {
 			COALESCE(r.MOTHERAGE, ''),
 			COALESCE(r.MOTHEREDUCATIONALATTAINMENT, ''),
 			COALESCE(r.MOTHERLIVINGSTATUS, ''),
+			COALESCE(r.MOTHEROCCUPATION, ''),
 			COALESCE(r.GUARDIANFULLNAME, ''),
 			COALESCE(r.GUARDIANAGE, ''),
 			COALESCE(r.EDUCATIONALATTAINMENT, ''),
@@ -180,7 +181,7 @@ func (repo *FormRepository) GetFormDetail(idNumber int) (*FormDetail, error) {
 		height, weight, civilStatus                                    string
 		contactPerson, contactPersonAddress, contactNumber, relationship string
 		fatherName, fatherAge, fatherEduc, fatherLiving, fatherOcc      string
-		motherName, motherAge, motherEduc, motherLiving                 string
+		motherName, motherAge, motherEduc, motherLiving, motherOcc      string
 		guardianName, guardianAge, guardianEduc, guardianOcc            string
 		parentsMaritalStatus, numChildren, numBrothers, numSisters      string
 		elemSchool, elemAddr, elemYear, elemType                        string
@@ -202,7 +203,7 @@ func (repo *FormRepository) GetFormDetail(idNumber int) (*FormDetail, error) {
 		&data.height, &data.weight, &data.civilStatus,
 		&data.contactPerson, &data.contactPersonAddress, &data.contactNumber, &data.relationship,
 		&data.fatherName, &data.fatherAge, &data.fatherEduc, &data.fatherLiving, &data.fatherOcc,
-		&data.motherName, &data.motherAge, &data.motherEduc, &data.motherLiving,
+		&data.motherName, &data.motherAge, &data.motherEduc, &data.motherLiving, &data.motherOcc,
 		&data.guardianName, &data.guardianAge, &data.guardianEduc, &data.guardianOcc,
 		&data.parentsMaritalStatus, &data.numChildren, &data.numBrothers, &data.numSisters,
 		&data.elemSchool, &data.elemAddr, &data.elemYear, &data.elemType,
@@ -254,6 +255,7 @@ func (repo *FormRepository) GetFormDetail(idNumber int) (*FormDetail, error) {
 			MotherAge:              data.motherAge,
 			MotherEducationalAttainment: data.motherEduc,
 			MotherLivingStatus:     data.motherLiving,
+			MotherOccupation:       data.motherOcc,
 			GuardianName:           data.guardianName,
 			GuardianAge:            data.guardianAge,
 			GuardianEducationalAttainment: data.guardianEduc,
