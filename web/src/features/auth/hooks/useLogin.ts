@@ -14,6 +14,7 @@ export function useLogin() {
     mutationFn: loginRequest,
     onSuccess: (data) => {
       sessionStorage.setItem('egabay_token', data.token)
+      sessionStorage.setItem('egabay_login_timestamp', String(Date.now()))
       queryClient.invalidateQueries({ queryKey: ['auth'] })
     },
   })

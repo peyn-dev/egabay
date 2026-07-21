@@ -1,4 +1,16 @@
-import { ArrowLeft, Download, FileText, Printer } from 'lucide-react'
+import {
+  ArrowLeft,
+  BookOpen,
+  BriefcaseBusiness,
+  Building2,
+  Download,
+  FileText,
+  GraduationCap,
+  Home,
+  MapPin,
+  Printer,
+  Ruler,
+} from 'lucide-react'
 import { Link, useParams } from 'react-router'
 
 import { Badge } from '@/components/ui/badge'
@@ -138,7 +150,7 @@ export default function FormDetailPage() {
               {/* Academic info */}
               <div className="space-y-3">
                 <div className="flex items-center gap-2.5">
-                  <FileText className="size-4 shrink-0 text-zinc-400" />
+                  <Building2 className="size-4 shrink-0 text-zinc-400" />
                   <div className="min-w-0">
                     <p className="text-xs text-zinc-400">College</p>
                     <p className="text-sm font-medium text-zinc-900 truncate">
@@ -147,7 +159,7 @@ export default function FormDetailPage() {
                   </div>
                 </div>
                 <div className="flex items-center gap-2.5">
-                  <FileText className="size-4 shrink-0 text-zinc-400" />
+                  <BookOpen className="size-4 shrink-0 text-zinc-400" />
                   <div className="min-w-0">
                     <p className="text-xs text-zinc-400">Program</p>
                     <p className="text-sm font-medium text-zinc-900 truncate">
@@ -156,14 +168,14 @@ export default function FormDetailPage() {
                   </div>
                 </div>
                 <div className="flex items-center gap-2.5">
-                  <FileText className="size-4 shrink-0 text-zinc-400" />
+                  <GraduationCap className="size-4 shrink-0 text-zinc-400" />
                   <div className="min-w-0">
                     <p className="text-xs text-zinc-400">Year Level</p>
                     <p className="text-sm font-medium text-zinc-900">{p.year_level || '—'}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2.5">
-                  <FileText className="size-4 shrink-0 text-zinc-400" />
+                  <Ruler className="size-4 shrink-0 text-zinc-400" />
                   <div className="min-w-0">
                     <p className="text-xs text-zinc-400">Height / Weight</p>
                     <p className="text-sm font-medium text-zinc-900">
@@ -178,21 +190,21 @@ export default function FormDetailPage() {
               {/* Contact info */}
               <div className="space-y-3">
                 <div className="flex items-center gap-2.5">
-                  <FileText className="size-4 shrink-0 text-zinc-400" />
+                  <MapPin className="size-4 shrink-0 text-zinc-400" />
                   <div className="min-w-0">
                     <p className="text-xs text-zinc-400">Address</p>
                     <p className="text-sm font-medium text-zinc-900">{p.address || '—'}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2.5">
-                  <FileText className="size-4 shrink-0 text-zinc-400" />
+                  <Home className="size-4 shrink-0 text-zinc-400" />
                   <div className="min-w-0">
                     <p className="text-xs text-zinc-400">Address Type</p>
                     <p className="text-sm font-medium text-zinc-900">{p.present_address_type || '—'}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2.5">
-                  <FileText className="size-4 shrink-0 text-zinc-400" />
+                  <BriefcaseBusiness className="size-4 shrink-0 text-zinc-400" />
                   <div className="min-w-0">
                     <p className="text-xs text-zinc-400">Currently Working</p>
                     <p className="text-sm font-medium text-zinc-900">{p.is_currently_working || '—'}</p>

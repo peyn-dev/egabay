@@ -3,6 +3,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router'
 
+import { SessionProvider } from '@/components/auth/session-provider'
 import App from '@/App'
 import '@/index.css'
 
@@ -12,7 +13,9 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <App />
+        <SessionProvider>
+          <App />
+        </SessionProvider>
       </BrowserRouter>
     </QueryClientProvider>
   </StrictMode>,

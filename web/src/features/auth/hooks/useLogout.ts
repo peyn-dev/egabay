@@ -8,6 +8,7 @@ export function useLogout() {
 
   const logout = useCallback(() => {
     sessionStorage.removeItem('egabay_token')
+    sessionStorage.removeItem('egabay_login_timestamp')
     queryClient.invalidateQueries({ queryKey: ['auth'] })
     queryClient.clear()
     navigate('/login', { replace: true })
