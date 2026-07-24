@@ -44,3 +44,35 @@
 - A `.env` file exists locally but is **gitignored** — template in README; actual port is 8081
 - All `go` commands must be run from repo root; all `npm` commands from `web/`
 - JWT expires after 8h — no refresh mechanism
+- MSU seal (`/msu-seal.png`) is 2MB, DSA logo (`/dsa-logo.png`) is 2.7MB — NOT embedded as base64 in JS; uses URL paths served by Vite
+
+## Summary
+
+### Dashboard
+- Enrollment counted via `BILLINGACCOUNTS` (14,154 distinct IDNUMBERs for 2025 2nd semester)
+- Charts: Students Per College (top 5, 2-col span, custom tooltip from `payload.full`), Guidance Concerns (horizontal bar), Civil Status (donut), Currently Working (donut)
+- Filters: Academic Year / Semester (from `GetEnrollmentPeriods()`), Tribe (from `useTribeDistribution`), Concern (8 hardcoded options)
+- Tribe/concern filters use `EXISTS (SELECT 1 FROM STUDENTPROFILES ...)` clause; only 8 profiles exist → empty results when restricted
+
+### PDF Generator (`web/src/lib/generate-form-pdf.ts`)
+- Verbatim HTML copy of akan `inventory_pdf.php` template
+- Uses `html2canvas` + `jsPDF` (8.5in × 13in), 2 pages (form + page break)
+- Sections: Personal Info (caption row), Health (5 problems w/ specify), Other Information (interest groups, consulted status, 8 guidance concerns), Disclaimer, Parental/Guardian Consent
+- Financer checkboxes mapped from numeric codes: `'1'`=Parents → `'6'`=Scholarship
+- Seal images referenced by URL (`/msu-seal.png`, `/dsa-logo.png`)
+- Wired to "Download PDF" button in `form-detail.tsx`
+
+### Backend Extensions
+- `ProfileInfo` struct: 41 fields (health booleans/specify, interest toggles, guidance concerns, psych test records × 3)
+- `FamilyInfo` struct: `OtherMaritalStatusReason`
+- SQL query: 90+ COALESCE columns from `STUDENTS` + `STUDENTPROFILES`
+- TypeScript `StudentFormDetail` schema: matching `profile` + `family` interfaces
+
+### Auth
+- `useLogout.ts` hook: clears sessionStorage, invalidates React Query, navigates to `/login`
+- `SessionProvider`: 1-hour inactivity timeout with activity listeners
+- Login error: catches network/JSON failures, shows "Server is down"
+
+### Style
+- `index.css`: `outline: none !important` on `.recharts-surface, .recharts-wrapper *`
+- Sidebar: bottom logo SVG removed (now shows nav items only)

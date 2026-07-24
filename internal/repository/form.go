@@ -35,6 +35,54 @@ type ProfileInfo struct {
 	Weight               string `json:"weight"`
 	PresentAddressType   string `json:"present_address_type"`
 	IsCurrentlyWorking   string `json:"is_currently_working"`
+	LastName             string `json:"last_name"`
+	FirstName            string `json:"first_name"`
+	MiddleName           string `json:"middle_name"`
+	GPA                  string `json:"gpa"`
+	HomeTownAddress      string `json:"home_town_address"`
+	VisionProblem        string `json:"vision_problem"`
+	SpeechProblem        string `json:"speech_problem"`
+	HearingProblem       string `json:"hearing_problem"`
+	HealthProblem        string `json:"health_problem"`
+	DisabilityProblem    string `json:"disability_problem"`
+	VisionSpecify        string `json:"vision_specify"`
+	SpeechSpecify        string `json:"speech_specify"`
+	HearingSpecify       string `json:"hearing_specify"`
+	HealthSpecify        string `json:"health_specify"`
+	DisabilitySpecify    string `json:"disability_specify"`
+	DiagnosedBefore      string `json:"diagnosed_before"`
+	DiagnosedSpecify     string `json:"diagnosed_specify"`
+	PsychTestBefore      string `json:"psych_test_before"`
+	Date1                string `json:"date1"`
+	Test1                string `json:"test1"`
+	Score1               string `json:"score1"`
+	Rank1                string `json:"rank1"`
+	Date2                string `json:"date2"`
+	Test2                string `json:"test2"`
+	Score2               string `json:"score2"`
+	Rank2                string `json:"rank2"`
+	Date3                string `json:"date3"`
+	Test3                string `json:"test3"`
+	Score3               string `json:"score3"`
+	Rank3                string `json:"rank3"`
+	Sports               string `json:"sports"`
+	Science              string `json:"science"`
+	CivicAwareness       string `json:"civic_awareness"`
+	Arts                 string `json:"arts"`
+	SocialStudies        string `json:"social_studies"`
+	Religious            string `json:"religious"`
+	OthersInterests      string `json:"others_interests"`
+	ConsultedStatus      string `json:"consulted_status"`
+	ReasonForConsultation string `json:"reason_for_consultation"`
+	FamilyMatters        string `json:"family_matters"`
+	CareerConcerns       string `json:"career_concerns"`
+	RelationshipConcerns string `json:"relationship_concerns"`
+	SelfConcerns         string `json:"self_concerns"`
+	ConcernWithTeachers  string `json:"concern_with_teachers"`
+	FinancialMatters     string `json:"financial_matters"`
+	AcademicConcerns     string `json:"academic_concerns"`
+	HealthConcerns       string `json:"health_concerns"`
+	OtherGuidanceConcern string `json:"other_guidance_concern"`
 }
 
 type FamilyInfo struct {
@@ -60,6 +108,7 @@ type FamilyInfo struct {
 	EmergencyContactPersonAddress string `json:"emergency_contact_person_address"`
 	EmergencyContactNumber string `json:"emergency_contact_number"`
 	Relationship           string `json:"relationship"`
+	OtherMaritalStatusReason string `json:"other_marital_status_reason"`
 }
 
 type AcademicInfo struct {
@@ -166,7 +215,61 @@ func (repo *FormRepository) GetFormDetail(idNumber int) (*FormDetail, error) {
 			COALESCE(r.FINANCERS, ''),
 			COALESCE(r.OTHERFINANCER, ''),
 			COALESCE(r.EMPLOYERNAME, ''),
-			COALESCE(r.EMPLOYERADDRESS, '')
+			COALESCE(r.EMPLOYERADDRESS, ''),
+			COALESCE(s.LASTNAME, ''),
+			COALESCE(s.FIRSTNAME, ''),
+			COALESCE(s.MIDDLENAME, ''),
+			COALESCE(s.BIRTHDAY, ''),
+			COALESCE(s.BIRTHPLACE, ''),
+			COALESCE(s.EMAILADDRESS, ''),
+			COALESCE(s.MOBILENUMBER, ''),
+			COALESCE(s.GPA, ''),
+			COALESCE(s.RELIGION, ''),
+			COALESCE(r.HOMETOWNADDRESS, ''),
+			COALESCE(r.OTHERMARITALSTATUSREASON, ''),
+			COALESCE(r.PROBLEMVISION, ''),
+			COALESCE(r.PROBLEMSPEECH, ''),
+			COALESCE(r.PROBLEMHEARING, ''),
+			COALESCE(r.PROBLEMHEALTH, ''),
+			COALESCE(r.PROBLEMDISABILITY, ''),
+			COALESCE(r.VISIONSPECIFY, ''),
+			COALESCE(r.SPEECHSPECIFY, ''),
+			COALESCE(r.HEARINGSPECIFY, ''),
+			COALESCE(r.HEALTHSPECIFY, ''),
+			COALESCE(r.DISABILITYSPECIFY, ''),
+			COALESCE(r.DIAGNOSEDBEFORE, ''),
+			COALESCE(r.DIAGNOSEDSPECIFY, ''),
+			COALESCE(r.PSYCHTESTBEFORE, ''),
+			COALESCE(r.DATE1, ''),
+			COALESCE(r.TEST1, ''),
+			COALESCE(r.SCORE1, ''),
+			COALESCE(r.RANK1, ''),
+			COALESCE(r.DATE2, ''),
+			COALESCE(r.TEST2, ''),
+			COALESCE(r.SCORE2, ''),
+			COALESCE(r.RANK2, ''),
+			COALESCE(r.DATE3, ''),
+			COALESCE(r.TEST3, ''),
+			COALESCE(r.SCORE3, ''),
+			COALESCE(r.RANK3, ''),
+			COALESCE(r.SPORTS, ''),
+			COALESCE(r.SCIENCE, ''),
+			COALESCE(r.CIVICAWARENESS, ''),
+			COALESCE(r.ARTS, ''),
+			COALESCE(r.SOCIALSTUDIES, ''),
+			COALESCE(r.OTHERSINTERESTS, ''),
+			COALESCE(r.CONSULTEDSTATUS, ''),
+			COALESCE(r.REASONFORCONSULTATION, ''),
+			COALESCE(r.FAMILYMATTERS, ''),
+			COALESCE(r.CAREERCONCERNS, ''),
+			COALESCE(r.RELATIONSHIPCONCERNS, ''),
+			COALESCE(r.SELFCONCERNS, ''),
+			COALESCE(r.CONCERNWITHTEACHERS, ''),
+			COALESCE(r.FINANCIALMATTERS, ''),
+			COALESCE(r.ACADEMICCONCERNS, ''),
+			COALESCE(r.HEALTHCONCERNS, ''),
+			COALESCE(r.OTHERGUIDANCECONCERN, ''),
+			COALESCE(r.RELIGIOUS, '')
 		FROM STUDENTPROFILES r
 		LEFT JOIN STUDENTS s ON s.IDNUMBER = r.IDNUMBER
 		LEFT JOIN COURSES c ON c.COURSE = s.COURSE
@@ -191,6 +294,20 @@ func (repo *FormRepository) GetFormDetail(idNumber int) (*FormDetail, error) {
 		collegeSchool, collegeAddr, collegeYear, collegeType             string
 		honors, natureOfSchooling, reasonForStopping                     string
 		financers, otherFinancer, employerName, employerAddress          string
+		lastName, firstName, middleName                                  string
+		birthday, birthplace, emailAddress, mobileNumber, gpa, religion  string
+		homeTownAddress, otherMaritalStatusReason                        string
+		problemVision, problemSpeech, problemHearing, problemHealth, problemDisability string
+		visionSpecify, speechSpecify, hearingSpecify, healthSpecify, disabilitySpecify  string
+		diagnosedBefore, diagnosedSpecify, psychTestBefore               string
+		date1, test1, score1, rank1                                      string
+		date2, test2, score2, rank2                                      string
+		date3, test3, score3, rank3                                      string
+		sports, science, civicAwareness, arts, socialStudies, religious, othersInterests string
+		consultedStatus, reasonForConsultation                           string
+		familyMatters, careerConcerns, relationshipConcerns, selfConcerns         string
+		concernWithTeachers, financialMatters, academicConcerns, healthConcerns   string
+		otherGuidanceConcern                                              string
 	}
 
 	var data row
@@ -214,6 +331,22 @@ func (repo *FormRepository) GetFormDetail(idNumber int) (*FormDetail, error) {
 		&data.honors, &data.natureOfSchooling, &data.reasonForStopping,
 		&data.financers, &data.otherFinancer,
 		&data.employerName, &data.employerAddress,
+		&data.lastName, &data.firstName, &data.middleName,
+		&data.birthday, &data.birthplace, &data.emailAddress, &data.mobileNumber,
+		&data.gpa, &data.religion,
+		&data.homeTownAddress, &data.otherMaritalStatusReason,
+		&data.problemVision, &data.problemSpeech, &data.problemHearing, &data.problemHealth, &data.problemDisability,
+		&data.visionSpecify, &data.speechSpecify, &data.hearingSpecify, &data.healthSpecify, &data.disabilitySpecify,
+		&data.diagnosedBefore, &data.diagnosedSpecify, &data.psychTestBefore,
+		&data.date1, &data.test1, &data.score1, &data.rank1,
+		&data.date2, &data.test2, &data.score2, &data.rank2,
+		&data.date3, &data.test3, &data.score3, &data.rank3,
+		&data.sports, &data.science, &data.civicAwareness, &data.arts, &data.socialStudies, &data.othersInterests,
+		&data.consultedStatus, &data.reasonForConsultation,
+		&data.familyMatters, &data.careerConcerns, &data.relationshipConcerns, &data.selfConcerns,
+		&data.concernWithTeachers, &data.financialMatters, &data.academicConcerns, &data.healthConcerns,
+		&data.otherGuidanceConcern,
+		&data.religious,
 	)
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -232,18 +365,69 @@ func (repo *FormRepository) GetFormDetail(idNumber int) (*FormDetail, error) {
 			Gender:             data.gender,
 			Tribe:              data.tribe,
 			OtherTribe:         data.otherTribe,
-			DateOfBirth:        "",
-			PlaceOfBirth:       "",
+			DateOfBirth:        data.birthday,
+			PlaceOfBirth:       data.birthplace,
 			CivilStatus:        data.civilStatus,
+			ReligiousAffiliation: data.religion,
 			Nationality:        "Filipino",
 			College:            data.college,
 			Program:            data.course,
 			YearLevel:          data.yearLevel,
+			Email:              data.emailAddress,
+			Phone:              data.mobileNumber,
 			Address:            data.presentAddress,
-			PresentAddressType: data.presentAddressType,
 			Height:             data.height,
 			Weight:             data.weight,
+			PresentAddressType: data.presentAddressType,
 			IsCurrentlyWorking: data.isCurrentlyWorking,
+			LastName:           data.lastName,
+			FirstName:          data.firstName,
+			MiddleName:         data.middleName,
+			GPA:                data.gpa,
+			HomeTownAddress:    data.homeTownAddress,
+			VisionProblem:      data.problemVision,
+			SpeechProblem:      data.problemSpeech,
+			HearingProblem:     data.problemHearing,
+			HealthProblem:      data.problemHealth,
+			DisabilityProblem:  data.problemDisability,
+			VisionSpecify:      data.visionSpecify,
+			SpeechSpecify:      data.speechSpecify,
+			HearingSpecify:     data.hearingSpecify,
+			HealthSpecify:      data.healthSpecify,
+			DisabilitySpecify:  data.disabilitySpecify,
+			DiagnosedBefore:    data.diagnosedBefore,
+			DiagnosedSpecify:   data.diagnosedSpecify,
+			PsychTestBefore:    data.psychTestBefore,
+			Date1:              data.date1,
+			Test1:              data.test1,
+			Score1:             data.score1,
+			Rank1:              data.rank1,
+			Date2:              data.date2,
+			Test2:              data.test2,
+			Score2:             data.score2,
+			Rank2:              data.rank2,
+			Date3:              data.date3,
+			Test3:              data.test3,
+			Score3:             data.score3,
+			Rank3:              data.rank3,
+			Sports:             data.sports,
+			Science:            data.science,
+			CivicAwareness:     data.civicAwareness,
+			Arts:               data.arts,
+			SocialStudies:      data.socialStudies,
+			Religious:          data.religious,
+			OthersInterests:    data.othersInterests,
+			ConsultedStatus:    data.consultedStatus,
+			ReasonForConsultation: data.reasonForConsultation,
+			FamilyMatters:      data.familyMatters,
+			CareerConcerns:     data.careerConcerns,
+			RelationshipConcerns: data.relationshipConcerns,
+			SelfConcerns:       data.selfConcerns,
+			ConcernWithTeachers: data.concernWithTeachers,
+			FinancialMatters:   data.financialMatters,
+			AcademicConcerns:   data.academicConcerns,
+			HealthConcerns:     data.healthConcerns,
+			OtherGuidanceConcern: data.otherGuidanceConcern,
 		},
 		Family: FamilyInfo{
 			FatherName:             data.fatherName,
@@ -268,6 +452,7 @@ func (repo *FormRepository) GetFormDetail(idNumber int) (*FormDetail, error) {
 			EmergencyContactPersonAddress: data.contactPersonAddress,
 			EmergencyContactNumber: data.contactNumber,
 			Relationship:           data.relationship,
+			OtherMaritalStatusReason: data.otherMaritalStatusReason,
 		},
 		Academic: AcademicInfo{
 			ElementarySchoolName:    data.elemSchool,

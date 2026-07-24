@@ -20,6 +20,7 @@ import { Separator } from '@/components/ui/separator'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout'
 import { useStudentForm } from '@/features/student/hooks/useStudentForm'
+import { generateFormPdf } from '@/lib/generate-form-pdf'
 
 function initials(name: string) {
   return name
@@ -113,7 +114,7 @@ export default function FormDetailPage() {
             <Printer className="size-4" />
             Print Form
           </Button>
-          <Button size="sm" className="h-9 gap-1.5">
+          <Button size="sm" className="h-9 gap-1.5" onClick={() => generateFormPdf(form)}>
             <Download className="size-4" />
             Download PDF
           </Button>

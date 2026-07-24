@@ -23,6 +23,54 @@ export interface StudentFormDetail {
     weight: string
     present_address_type: string
     is_currently_working: string
+    last_name: string
+    first_name: string
+    middle_name: string
+    gpa: string
+    home_town_address: string
+    vision_problem: string
+    speech_problem: string
+    hearing_problem: string
+    health_problem: string
+    disability_problem: string
+    vision_specify: string
+    speech_specify: string
+    hearing_specify: string
+    health_specify: string
+    disability_specify: string
+    diagnosed_before: string
+    diagnosed_specify: string
+    psych_test_before: string
+    date1: string
+    test1: string
+    score1: string
+    rank1: string
+    date2: string
+    test2: string
+    score2: string
+    rank2: string
+    date3: string
+    test3: string
+    score3: string
+    rank3: string
+    sports: string
+    science: string
+    civic_awareness: string
+    arts: string
+    social_studies: string
+    religious: string
+    others_interests: string
+    consulted_status: string
+    reason_for_consultation: string
+    family_matters: string
+    career_concerns: string
+    relationship_concerns: string
+    self_concerns: string
+    concern_with_teachers: string
+    financial_matters: string
+    academic_concerns: string
+    health_concerns: string
+    other_guidance_concern: string
   }
   family: {
     father_name: string
@@ -47,6 +95,7 @@ export interface StudentFormDetail {
     emergency_contact_person_address: string
     emergency_contact_number: string
     relationship: string
+    other_marital_status_reason: string
   }
   academic: {
     elementary_school_name: string
